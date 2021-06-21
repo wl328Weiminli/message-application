@@ -64,9 +64,13 @@ router.post("/login", async (req, res, next) => {
         process.env.SESSION_SECRET,
         { expiresIn: 86400 }
       );
+      // set the token to cookie
+      res.cookie("token", token, {
+        httpOnly: true,
+        signed: true,
+      });
       res.json({
         ...user.dataValues,
-        token,
       });
     }
   } catch (error) {
