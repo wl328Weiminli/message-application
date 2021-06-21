@@ -19,8 +19,10 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(express.static(join(__dirname, "public")));
 
+app.use(cookieParser(process.env.SESSION_SECRET));
+
 app.use(function (req, res, next) {
-  const token = req.headers["x-access-token"];
+  const token = req.signedCookies.token;
   if (token) {
     jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
       if (err) {
