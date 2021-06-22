@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { Conversation, Message } = require("../../db/models");
+const { Op } = require("sequelize");
+const { Conversation, Message, User } = require("../../db/models");
 const onlineUsers = require("../../onlineUsers");
 
 // expects {recipientId, text, conversationId } in body (conversationId will be null if no conversation exists yet)
@@ -11,17 +12,50 @@ router.post("/", async (req, res, next) => {
     const senderId = req.user.id;
     const { recipientId, text, conversationId, sender } = req.body;
 
-    // if we already know conversation id, we can save time and just add it to message and return
-    if (conversationId) {
-      const message = await Message.create({ senderId, text, conversationId });
-      return res.json({ message, sender });
+    /*
+      make sure the recipientId in the user table; (the receiverId != senderId)
+    
+      Because frontend need to check the value of the sender. 
+      if sender is not null the frontend will add a new conversation,
+      So sender && conversationId || !sender && !conversationId  return 400
+
+      if sender is not null, check the id, it should equal to senderId.
+    */
+    const receiver = await User.findOne({
+      where: {
+        id: {
+          [Op.and]: {
+            [Op.eq]: recipientId,
+            [Op.not]: senderId,
+          },
+        },
+      },
+    });
+    if (
+      !receiver ||
+      (sender && conversationId) ||
+      (!sender && !conversationId) ||
+      (sender && sender.id !== senderId)
+    ) {
+      return res.sendStatus(400);
     }
-    // if we don't have conversation id, find a conversation to make sure it doesn't already exist
+
     let conversation = await Conversation.findConversation(
       senderId,
       recipientId
     );
 
+    // if we already know conversation id, we can save time and just add it to message and return
+    if (conversationId) {
+      // check the conversationId, the conversationId should belong to the senderId and recipientId.
+      if (conversationId !== conversation.id) {
+        return res.sendStatus(400);
+      }
+
+      const message = await Message.create({ senderId, text, conversationId });
+      return res.json({ message, sender });
+    }
+    // if we don't have conversation id, find a conversation to make sure it doesn't already exist
     if (!conversation) {
       // create conversation
       conversation = await Conversation.create({
