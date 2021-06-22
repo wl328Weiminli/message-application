@@ -49,7 +49,8 @@ router.post("/", async (req, res, next) => {
     if (conversationId) {
       // check the conversationId, the conversationId should belong to the senderId and recipientId.
       if (conversationId !== conversation.id) {
-        return res.sendStatus(400);
+        // if this conversationId doesn't belong to the user the status code should be 403 unauthorized
+        return res.sendStatus(403);
       }
 
       const message = await Message.create({ senderId, text, conversationId });
