@@ -29,6 +29,7 @@ router.post("/register", async (req, res, next) => {
     res.cookie("token", token, {
       httpOnly: true,
       signed: true,
+      maxAge: 86400000,
     });
     res.json({
       ...user.dataValues,
@@ -67,11 +68,17 @@ router.post("/login", async (req, res, next) => {
         process.env.SESSION_SECRET,
         { expiresIn: 86400 }
       );
-      // set the token to cookie
+      /*
+      set the cookie and same expire time with token. 
+      here is 86400000 milliseconds
+      token is 86400 seconds
+      */
       res.cookie("token", token, {
         httpOnly: true,
         signed: true,
+        maxAge: 86400000,
       });
+
       res.json({
         ...user.dataValues,
       });
