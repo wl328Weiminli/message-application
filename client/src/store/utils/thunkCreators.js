@@ -8,11 +8,6 @@ import {
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
-axios.interceptors.request.use(async function (config) {
-  config.withCredentials = true;
-  return config;
-});
-
 // USER THUNK CREATORS
 
 export const fetchUser = () => async (dispatch) => {
