@@ -56,8 +56,7 @@ router.get("/", async (req, res, next) => {
       const timeB = new Date(
         b.messages[b.messages.length - 1].createdAt
       ).getTime();
-      if (timeA === timeB) return 0;
-      return timeA > timeB ? -1 : 1;
+      return timeB - timeA;
     });
 
     for (let i = 0; i < conversations.length; i++) {
