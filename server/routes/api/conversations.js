@@ -20,9 +20,9 @@ router.get("/", async (req, res, next) => {
         },
       },
       attributes: ["id"],
-      order: [[Message, "createdAt", "DESC"]],
+      order: [[Message, "createdAt", "ASC"]],
       include: [
-        { model: Message, order: ["createdAt", "DESC"] },
+        { model: Message },
         {
           model: User,
           as: "user1",
@@ -47,6 +47,17 @@ router.get("/", async (req, res, next) => {
         },
       ],
     });
+    // sort the conversations to make the latest message on the top of the side bar
+    // choose to sort at here mainly for lower the burden of the DB.
+    conversations.sort((a, b) => {
+      const timeA = new Date(
+        a.messages[a.messages.length - 1].createdAt
+      ).getTime();
+      const timeB = new Date(
+        b.messages[b.messages.length - 1].createdAt
+      ).getTime();
+      return timeB - timeA;
+    });
 
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
@@ -69,7 +80,8 @@ router.get("/", async (req, res, next) => {
       }
 
       // set properties for notification count and latest message preview
-      convoJSON.latestMessageText = convoJSON.messages[0].text;
+      convoJSON.latestMessageText =
+        convoJSON.messages[convoJSON.messages.length - 1].text;
       conversations[i] = convoJSON;
     }
 

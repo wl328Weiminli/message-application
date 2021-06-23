@@ -26,9 +26,13 @@ router.post("/register", async (req, res, next) => {
       process.env.SESSION_SECRET,
       { expiresIn: 86400 }
     );
+    res.cookie("token", token, {
+      httpOnly: true,
+      signed: true,
+      maxAge: 86400000,
+    });
     res.json({
       ...user.dataValues,
-      token,
     });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
@@ -64,9 +68,19 @@ router.post("/login", async (req, res, next) => {
         process.env.SESSION_SECRET,
         { expiresIn: 86400 }
       );
+      /*
+      set the cookie and same expire time with token. 
+      here is 86400000 milliseconds
+      token is 86400 seconds
+      */
+      res.cookie("token", token, {
+        httpOnly: true,
+        signed: true,
+        maxAge: 86400000,
+      });
+
       res.json({
         ...user.dataValues,
-        token,
       });
     }
   } catch (error) {
@@ -75,6 +89,10 @@ router.post("/login", async (req, res, next) => {
 });
 
 router.delete("/logout", (req, res, next) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    signed: true,
+  });
   res.sendStatus(204);
 });
 
