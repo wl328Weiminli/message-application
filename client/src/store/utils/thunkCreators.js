@@ -106,7 +106,7 @@ const setUnreadMessageInDB = async (body) => {
 
 export const setUnreadMessage = (body) => async (dispatch) => {
   try {
-    await setUnreadMessageInDB(body);
+    await setUnreadMessageInDB(body.unreadMessage);
     dispatch(setMessageStatus(body));
   } catch (error) {
     console.log(error);
