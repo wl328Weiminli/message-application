@@ -30,8 +30,12 @@ socket.on("connect", () => {
       const conv = conversations.find(
         (aConv) => aConv.otherUser.username === activeConversation
       );
-      if (conv && conv.otherUser.id === data.message.senderId) {
-        console.log("run ????");
+      // currently the socket is broadcast, so we also need to check conversationId
+      if (
+        conv &&
+        conv.otherUser.id === data.message.senderId &&
+        conv.id === data.message.conversationId
+      ) {
         store.dispatch(
           setUnreadMessage({
             activeConversation,

@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const { Message } = require("../../db/models");
+const { Conversation, Message, User } = require("../../db/models");
 
-// frontend need to post the array of the unread message.
+// this api is for recipient to set their unread message. the parameter is a list of unread messages
 router.post("/", async (req, res, next) => {
   try {
     if (!req.user) {
