@@ -5,6 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  setMessageStatus,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -96,6 +97,19 @@ export const postMessage = (body) => async (dispatch) => {
     sendMessage(data, body);
   } catch (error) {
     console.error(error);
+  }
+};
+
+const setUnreadMessageInDB = async (body) => {
+  await axios.post("/api/setunread", body);
+};
+
+export const setUnreadMessage = (body) => async (dispatch) => {
+  try {
+    await setUnreadMessageInDB(body);
+    dispatch(setMessageStatus(body));
+  } catch (error) {
+    console.log(error);
   }
 };
 
