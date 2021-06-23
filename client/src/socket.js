@@ -21,19 +21,24 @@ socket.on("connect", () => {
   });
   socket.on("new-message", (data) => {
     store.dispatch(setNewMessage(data.message, data.sender));
-    // when receiving the message, if the message's sender equals the activeConversation, we need to call setUnreadMessage
+    // when receiving the message, if the message's senderId equals the activeConversation's id, we need to call setUnreadMessage
     const activeConversation = store.getState().activeConversation;
     const conversations = store.getState().conversations;
-    const conv = conversations.find(
-      (aConv) => aConv.otherUser.username === activeConversation
-    );
-    if (conv) {
-      store.dispatch(
-        setUnreadMessage({
-          activeConversation,
-          unreadMessage: [data.message],
-        })
+    // first make sure we have activated a chat
+    if (activeConversation) {
+      // get the id of the activeConversation, first find the conv
+      const conv = conversations.find(
+        (aConv) => aConv.otherUser.username === activeConversation
       );
+      if (conv && conv.otherUser.id === data.message.senderId) {
+        console.log("run ????");
+        store.dispatch(
+          setUnreadMessage({
+            activeConversation,
+            unreadMessage: [data.message],
+          })
+        );
+      }
     }
   });
 });
