@@ -65,6 +65,9 @@ const mapDispatchToProps = (dispatch) => {
     setActiveChat: (id) => {
       dispatch(setActiveChat(id));
     },
+    setUnreadMessage: (messageStatus) => {
+      dispatch(setUnreadMessage(messageStatus));
+    },
   };
 };
 
