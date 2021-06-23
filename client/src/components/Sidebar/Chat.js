@@ -3,6 +3,7 @@ import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
+import { setUnreadMessage } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
 
 const styles = {
@@ -20,16 +21,28 @@ const styles = {
 };
 
 class Chat extends Component {
-  handleClick = async (conversation) => {
-    await this.props.setActiveChat(conversation.otherUser.username);
+  handleClick = async (conversation, unreadMessage) => {
+    const { username } = conversation.otherUser;
+    await this.props.setActiveChat(username);
+    // when click the chat and unread messages is not zero, call setUnreadMessage reset message
+    if (unreadMessage.length > 0) {
+      await this.props.setUnreadMessage({
+        activeConversation: username,
+        unreadMessage,
+      });
+    }
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, conversation } = this.props;
     const otherUser = this.props.conversation.otherUser;
+    // filter the unread message, the unread status is only for receiver
+    const unreadMessage = conversation.messages.filter(
+      (amessage) => otherUser.id === amessage.senderId && !amessage.readOrNot
+    );
     return (
       <Box
-        onClick={() => this.handleClick(this.props.conversation)}
+        onClick={() => this.handleClick(conversation, unreadMessage)}
         className={classes.root}
       >
         <BadgeAvatar
@@ -38,7 +51,10 @@ class Chat extends Component {
           online={otherUser.online}
           sidebar={true}
         />
-        <ChatContent conversation={this.props.conversation} />
+        <ChatContent
+          conversation={conversation}
+          unreadMessage={unreadMessage.length}
+        />
       </Box>
     );
   }
