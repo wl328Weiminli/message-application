@@ -22,7 +22,7 @@ router.get("/", async (req, res, next) => {
       attributes: ["id"],
       order: [[Message, "createdAt", "ASC"]],
       include: [
-        { model: Message, order: ["createdAt", "ASC"] },
+        { model: Message },
         {
           model: User,
           as: "user1",
@@ -46,6 +46,18 @@ router.get("/", async (req, res, next) => {
           required: false,
         },
       ],
+    });
+    // sort the conversations to make the latest message on the top of the side bar
+    // choose to sort at here mainly for lower the burden of the DB.
+    conversations.sort((a, b) => {
+      const timeA = new Date(
+        a.messages[a.messages.length - 1].createdAt
+      ).getTime();
+      const timeB = new Date(
+        b.messages[b.messages.length - 1].createdAt
+      ).getTime();
+      if (timeA === timeB) return 0;
+      return timeA > timeB ? -1 : 1;
     });
 
     for (let i = 0; i < conversations.length; i++) {
