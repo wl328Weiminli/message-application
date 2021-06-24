@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme) => ({
   spaceToInput: { marginBottom: "35px" },
 }));
 const RightBar = (props) => {
-  const { children } = props;
+  console.log(props);
+  const { children, notation, textInButton, titleText, jumpFunc } = props;
   const classes = useStyles();
   return (
     <Grid
@@ -25,22 +26,21 @@ const RightBar = (props) => {
     >
       <Grid container item justify="flex-end">
         <div className={classes.loginOrRegister}>
-          <Typography className={classes.shadeTextColor}>
-            Don’t have an account?
-          </Typography>
+          <Typography className={classes.shadeTextColor}>{notation}</Typography>
           <Button
             variant="outlined"
             color="primary"
             size="large"
             className={classes.switchButton}
+            onClick={jumpFunc}
           >
-            Create Account
+            {textInButton}
           </Button>
         </div>
       </Grid>
       <div>
         <Typography variant="h4" className={classes.spaceToInput}>
-          Welcome Back!
+          {titleText}
         </Typography>
         {children}
       </div>

@@ -10,11 +10,18 @@ import {
   TextField,
   FormHelperText,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { register } from "../store/utils/thunkCreators";
+
+const useStyles = makeStyles((theme) => ({
+  widthForInput: theme.widthForInput,
+  logInOrRegisterButton: theme.logInOrRegisterButton,
+}));
 
 const Signup = (props) => {
   const history = useHistory();
   const { user, register } = props;
+  const classes = useStyles();
   const [formErrorMessage, setFormErrorMessage] = useState({});
 
   const handleRegister = async (event) => {
@@ -39,10 +46,6 @@ const Signup = (props) => {
   return (
     <Grid container justify="center">
       <Box>
-        <Grid container item>
-          <Typography>Need to log in?</Typography>
-          <Button onClick={() => history.push("/login")}>Login</Button>
-        </Grid>
         <form onSubmit={handleRegister}>
           <Grid>
             <Grid>
@@ -52,6 +55,8 @@ const Signup = (props) => {
                   label="Username"
                   name="username"
                   type="text"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.widthForInput}
                   required
                 />
               </FormControl>
@@ -63,6 +68,8 @@ const Signup = (props) => {
                   aria-label="e-mail address"
                   type="email"
                   name="email"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.widthForInput}
                   required
                 />
               </FormControl>
@@ -75,6 +82,8 @@ const Signup = (props) => {
                   type="password"
                   inputProps={{ minLength: 6 }}
                   name="password"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.widthForInput}
                   required
                 />
                 <FormHelperText>
@@ -90,6 +99,8 @@ const Signup = (props) => {
                   type="password"
                   inputProps={{ minLength: 6 }}
                   name="confirmPassword"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.widthForInput}
                   required
                 />
                 <FormHelperText>
@@ -97,9 +108,17 @@ const Signup = (props) => {
                 </FormHelperText>
               </FormControl>
             </Grid>
-            <Button type="submit" variant="contained" size="large">
-              Create
-            </Button>
+            <Grid container justify="center">
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                color="primary"
+                className={classes.logInOrRegisterButton}
+              >
+                Create
+              </Button>
+            </Grid>
           </Grid>
         </form>
       </Box>
