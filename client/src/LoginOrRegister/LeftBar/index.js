@@ -6,7 +6,7 @@ import background from "./images/bg-img.png";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    background: `linear-gradient(#3A8DFF, transparent), url(${background})`,
+    background: `linear-gradient(#3A8DFF, transparent,  #86B9FF), url(${background})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "100% 100%",
     opacity: "85%",
