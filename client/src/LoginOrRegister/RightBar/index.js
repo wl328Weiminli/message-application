@@ -9,12 +9,15 @@ const useStyles = makeStyles((theme) => ({
   },
   switchButton: {
     marginLeft: "20px",
+    width: "155px",
+    height: "54px",
+    borderColor: "white",
+    boxShadow: "0 0 5px rgba(0, 0, 0, .3)",
   },
   shadeTextColor: { color: "rgba(0,0,0,0.38)" },
   spaceToInput: { marginBottom: "35px" },
 }));
 const RightBar = (props) => {
-  console.log(props);
   const { children, notation, textInButton, titleText, jumpFunc } = props;
   const classes = useStyles();
   return (
