@@ -100,13 +100,13 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
-const setUnreadMessageInDB = async (body) => {
+const setUnreadMessagesInDB = async (body) => {
   await axios.post("/api/messages-status", body);
 };
 
-export const setUnreadMessage = (body) => async (dispatch) => {
+export const setUnreadMessages = (body) => async (dispatch) => {
   try {
-    await setUnreadMessageInDB(body.unreadMessage);
+    await setUnreadMessagesInDB(body.unreadMessages);
     dispatch(setMessageStatus(body));
   } catch (error) {
     console.log(error);

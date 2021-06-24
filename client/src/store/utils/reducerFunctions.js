@@ -83,8 +83,8 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 };
 
 export const setStatusOfMessagToStore = (state, messageStatus) => {
-  const { activeConversation, unreadMessage } = messageStatus;
-  const { conversationId } = unreadMessage[0];
+  const { activeConversation, unreadMessages } = messageStatus;
+  const { conversationId } = unreadMessages[0];
 
   return state.map((convo) => {
     if (

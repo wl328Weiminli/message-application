@@ -3,7 +3,7 @@ import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
-import { setUnreadMessage } from "../../store/utils/thunkCreators";
+import { setUnreadMessages } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
 
 const styles = {
@@ -21,14 +21,14 @@ const styles = {
 };
 
 class Chat extends Component {
-  handleClick = async (conversation, unreadMessage) => {
+  handleClick = async (conversation, unreadMessages) => {
     const { username } = conversation.otherUser;
     await this.props.setActiveChat(username);
 
-    if (unreadMessage.length > 0) {
-      await this.props.setUnreadMessage({
+    if (unreadMessages.length > 0) {
+      await this.props.setUnreadMessages({
         activeConversation: username,
-        unreadMessage,
+        unreadMessages,
       });
     }
   };
@@ -37,12 +37,12 @@ class Chat extends Component {
     const { classes, conversation } = this.props;
     const otherUser = this.props.conversation.otherUser;
     // filter the unread message, the unread status is only for receiver
-    const unreadMessage = conversation.messages.filter(
+    const unreadMessages = conversation.messages.filter(
       (amessage) => otherUser.id === amessage.senderId && !amessage.read
     );
     return (
       <Box
-        onClick={() => this.handleClick(conversation, unreadMessage)}
+        onClick={() => this.handleClick(conversation, unreadMessages)}
         className={classes.root}
       >
         <BadgeAvatar
@@ -53,7 +53,7 @@ class Chat extends Component {
         />
         <ChatContent
           conversation={conversation}
-          unreadMessage={unreadMessage.length}
+          unreadMessages={unreadMessages.length}
         />
       </Box>
     );
@@ -65,8 +65,8 @@ const mapDispatchToProps = (dispatch) => {
     setActiveChat: (id) => {
       dispatch(setActiveChat(id));
     },
-    setUnreadMessage: (messageStatus) => {
-      dispatch(setUnreadMessage(messageStatus));
+    setUnreadMessages: (messageStatus) => {
+      dispatch(setUnreadMessages(messageStatus));
     },
   };
 };

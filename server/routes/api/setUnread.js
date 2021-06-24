@@ -7,9 +7,9 @@ router.post("/", async (req, res, next) => {
     if (!req.user) {
       return res.sendStatus(401);
     }
-    const unreadMessage = req.body;
+    const unreadMessages = req.body;
     await Promise.all(
-      unreadMessage.map((message) => {
+      unreadMessages.map((message) => {
         return Message.update({ read: true }, { where: { id: message.id } });
       })
     );

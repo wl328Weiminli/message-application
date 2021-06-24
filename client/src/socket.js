@@ -5,7 +5,7 @@ import {
   removeOfflineUser,
   addOnlineUser,
 } from "./store/conversations";
-import { setUnreadMessage } from "./store/utils/thunkCreators";
+import { setUnreadMessages } from "./store/utils/thunkCreators";
 
 const socket = io(window.location.origin);
 
@@ -37,9 +37,9 @@ socket.on("connect", () => {
         conv.id === data.message.conversationId
       ) {
         store.dispatch(
-          setUnreadMessage({
+          setUnreadMessages({
             activeConversation,
-            unreadMessage: [data.message],
+            unreadMessages: [data.message],
           })
         );
       }
