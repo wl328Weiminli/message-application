@@ -1,14 +1,7 @@
 import React from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  Grid,
-  Box,
-  Typography,
-  Button,
-  FormControl,
-  TextField,
-} from "@material-ui/core";
+import { Grid, Box, Button, FormControl, TextField } from "@material-ui/core";
 import { login } from "../store/utils/thunkCreators";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -18,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = (props) => {
-  const history = useHistory();
   const { user, login } = props;
   const classes = useStyles();
   const handleLogin = async (event) => {

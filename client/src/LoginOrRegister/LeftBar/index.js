@@ -1,4 +1,4 @@
-import { Grid, Box, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import IconLogo from "./IconLogo";
 import background from "./images/bg-img.png";

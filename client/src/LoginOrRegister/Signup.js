@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   Grid,
   Box,
-  Typography,
   Button,
   FormControl,
   TextField,
@@ -19,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Signup = (props) => {
-  const history = useHistory();
   const { user, register } = props;
   const classes = useStyles();
   const [formErrorMessage, setFormErrorMessage] = useState({});
