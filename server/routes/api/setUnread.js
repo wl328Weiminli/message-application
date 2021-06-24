@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { Conversation, Message, User } = require("../../db/models");
+const { Message } = require("../../db/models");
+const { Op } = require("sequelize");
 
 // this api is for recipient to set their unread message. the parameter is a list of unread messages
 router.post("/", async (req, res, next) => {
@@ -8,10 +9,17 @@ router.post("/", async (req, res, next) => {
       return res.sendStatus(401);
     }
     const unreadMessages = req.body;
-    await Promise.all(
-      unreadMessages.map((message) => {
-        return Message.update({ read: true }, { where: { id: message.id } });
-      })
+    await Message.update(
+      {
+        read: true,
+      },
+      {
+        where: {
+          id: {
+            [Op.in]: unreadMessages.map((message) => message.id),
+          },
+        },
+      }
     );
 
     res.sendStatus(204);
