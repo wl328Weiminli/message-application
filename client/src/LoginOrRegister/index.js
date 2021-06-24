@@ -1,6 +1,7 @@
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LeftBar from "./LeftBar";
+import RightBar from "./RightBar";
 import Login from "./Login";
 import Signup from "./Signup";
 
@@ -22,11 +23,15 @@ const LoginOrRegister = (props) => {
   return (
     <>
       <Grid container className={classes.root}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={5}>
           <LeftBar />
         </Grid>
-        <Grid item>
-          {checkLoginOrRegister === "login" ? <Login /> : <Signup />}
+        <Grid container item xs={12} sm={7}>
+          {checkLoginOrRegister === "login" ? (
+            <RightBar children={<Login />} />
+          ) : (
+            <RightBar children={<Signup />} />
+          )}
         </Grid>
       </Grid>
     </>

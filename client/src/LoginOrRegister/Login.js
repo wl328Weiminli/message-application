@@ -10,11 +10,17 @@ import {
   TextField,
 } from "@material-ui/core";
 import { login } from "../store/utils/thunkCreators";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  widthForInput: theme.widthForInput,
+  logInOrRegisterButton: theme.logInOrRegisterButton,
+}));
 
 const Login = (props) => {
   const history = useHistory();
   const { user, login } = props;
-
+  const classes = useStyles();
   const handleLogin = async (event) => {
     event.preventDefault();
     const username = event.target.username.value;
@@ -30,10 +36,6 @@ const Login = (props) => {
   return (
     <Grid container justify="center">
       <Box>
-        <Grid container item>
-          <Typography>Need to register?</Typography>
-          <Button onClick={() => history.push("/register")}>Register</Button>
-        </Grid>
         <form onSubmit={handleLogin}>
           <Grid>
             <Grid>
@@ -43,6 +45,8 @@ const Login = (props) => {
                   label="Username"
                   name="username"
                   type="text"
+                  className={classes.widthForInput}
+                  InputLabelProps={{ shrink: true }}
                 />
               </FormControl>
             </Grid>
@@ -52,10 +56,18 @@ const Login = (props) => {
                 aria-label="password"
                 type="password"
                 name="password"
+                className={classes.widthForInput}
+                InputLabelProps={{ shrink: true }}
               />
             </FormControl>
-            <Grid>
-              <Button type="submit" variant="contained" size="large">
+            <Grid container justify="center">
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                color="primary"
+                className={classes.logInOrRegisterButton}
+              >
                 Login
               </Button>
             </Grid>
