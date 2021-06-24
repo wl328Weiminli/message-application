@@ -38,7 +38,7 @@ class Chat extends Component {
     const otherUser = this.props.conversation.otherUser;
     // filter the unread message, the unread status is only for receiver
     const unreadMessages = conversation.messages.filter(
-      (amessage) => otherUser.id === amessage.senderId && !amessage.read
+      (message) => otherUser.id === message.senderId && !message.read
     );
     return (
       <Box
