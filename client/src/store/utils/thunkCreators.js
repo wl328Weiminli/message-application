@@ -101,7 +101,7 @@ export const postMessage = (body) => async (dispatch) => {
 };
 
 const setUnreadMessageInDB = async (body) => {
-  await axios.post("/api/setunread", body);
+  await axios.post("/api/messages-status", body);
 };
 
 export const setUnreadMessage = (body) => async (dispatch) => {
