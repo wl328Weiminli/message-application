@@ -95,7 +95,7 @@ export const setStatusOfMessagToStore = (state, messageStatus) => {
       const senderId = newConvo.otherUser.id;
       newConvo.messages.map((message) => {
         if (message.senderId === senderId) {
-          message.readOrNot = true;
+          message.read = true;
         }
         return message;
       });

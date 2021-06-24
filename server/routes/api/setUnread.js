@@ -10,10 +10,7 @@ router.post("/", async (req, res, next) => {
     const unreadMessage = req.body;
     await Promise.all(
       unreadMessage.map((message) => {
-        return Message.update(
-          { readOrNot: true },
-          { where: { id: message.id } }
-        );
+        return Message.update({ read: true }, { where: { id: message.id } });
       })
     );
 
