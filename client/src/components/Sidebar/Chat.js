@@ -24,7 +24,7 @@ class Chat extends Component {
   handleClick = async (conversation, unreadMessage) => {
     const { username } = conversation.otherUser;
     await this.props.setActiveChat(username);
-    // when click the chat and unread messages is not zero, call setUnreadMessage reset message
+
     if (unreadMessage.length > 0) {
       await this.props.setUnreadMessage({
         activeConversation: username,
