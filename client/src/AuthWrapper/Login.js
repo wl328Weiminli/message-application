@@ -44,7 +44,7 @@ const Login = (props) => {
             </Grid>
             <FormControl margin="normal" required>
               <TextField
-                label="password"
+                label="Password"
                 aria-label="password"
                 type="password"
                 name="password"
