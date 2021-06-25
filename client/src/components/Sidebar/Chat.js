@@ -3,7 +3,6 @@ import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
-import { setUnreadMessages } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
 
 const styles = {
@@ -21,28 +20,16 @@ const styles = {
 };
 
 class Chat extends Component {
-  handleClick = async (conversation, unreadMessages) => {
-    const { username } = conversation.otherUser;
-    await this.props.setActiveChat(username);
-
-    if (unreadMessages.length > 0) {
-      await this.props.setUnreadMessages({
-        activeConversation: username,
-        unreadMessages,
-      });
-    }
+  handleClick = async (conversation) => {
+    await this.props.setActiveChat(conversation.otherUser.username);
   };
 
   render() {
-    const { classes, conversation } = this.props;
+    const { classes } = this.props;
     const otherUser = this.props.conversation.otherUser;
-    // filter the unread message, the unread status is only for receiver
-    const unreadMessages = conversation.messages.filter(
-      (message) => otherUser.id === message.senderId && !message.read
-    );
     return (
       <Box
-        onClick={() => this.handleClick(conversation, unreadMessages)}
+        onClick={() => this.handleClick(this.props.conversation)}
         className={classes.root}
       >
         <BadgeAvatar
@@ -51,10 +38,7 @@ class Chat extends Component {
           online={otherUser.online}
           sidebar={true}
         />
-        <ChatContent
-          conversation={conversation}
-          unreadMessages={unreadMessages.length}
-        />
+        <ChatContent conversation={this.props.conversation} />
       </Box>
     );
   }
@@ -64,9 +48,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setActiveChat: (id) => {
       dispatch(setActiveChat(id));
-    },
-    setUnreadMessages: (messageStatus) => {
-      dispatch(setUnreadMessages(messageStatus));
     },
   };
 };
