@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     background: `linear-gradient(#3A8DFF, transparent,  #86B9FF), url(${background})`,
     backgroundRepeat: "no-repeat",
-    backgroundSize: "100% 100%",
+    backgroundSize: "cover",
     opacity: "85%",
   },
   logo: {

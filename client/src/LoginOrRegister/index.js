@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import LeftBar from "./LeftBar";
@@ -37,9 +37,12 @@ const LoginOrRegister = (props) => {
   return (
     <>
       <Grid container className={classes.root}>
-        <Grid item xs={12} sm={5}>
-          <LeftBar />
-        </Grid>
+        <Hidden xsDown>
+          <Grid item sm={5}>
+            <LeftBar />
+          </Grid>
+        </Hidden>
+
         <Grid container item xs={12} sm={7}>
           {checkLoginOrRegister === "login" ? (
             <RightBar {...logInProps} children={<Login />} />
