@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
   },
 }));
-const LeftBar = (props) => {
+const SideBar = (props) => {
   const classes = useStyles();
   return (
     <Grid
@@ -43,4 +43,4 @@ const LeftBar = (props) => {
   );
 };
 
-export default LeftBar;
+export default SideBar;

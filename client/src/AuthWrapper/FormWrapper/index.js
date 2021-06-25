@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   shadeTextColor: { color: "rgba(0,0,0,0.38)" },
   spaceToInput: { marginBottom: "35px" },
 }));
-const RightBar = (props) => {
+const FormWrapper = (props) => {
   const { children, notation, textInButton, titleText, jumpFunc } = props;
   const classes = useStyles();
   return (
@@ -53,4 +53,4 @@ const RightBar = (props) => {
   );
 };
 
-export default RightBar;
+export default FormWrapper;

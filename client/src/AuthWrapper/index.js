@@ -1,8 +1,8 @@
 import { Grid, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
-import LeftBar from "./LeftBar";
-import RightBar from "./RightBar";
+import SideBar from "./SideBar";
+import FormWrapper from "./FormWrapper";
 import Login from "./Login";
 import Signup from "./Signup";
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginOrRegister = (props) => {
+const AuthWrapper = (props) => {
   const classes = useStyles();
   const history = useHistory();
   let checkLoginOrRegister;
@@ -39,15 +39,15 @@ const LoginOrRegister = (props) => {
       <Grid container className={classes.root}>
         <Hidden xsDown>
           <Grid item sm={5}>
-            <LeftBar />
+            <SideBar />
           </Grid>
         </Hidden>
 
         <Grid container item xs={12} sm={7}>
           {checkLoginOrRegister === "login" ? (
-            <RightBar {...logInProps} children={<Login />} />
+            <FormWrapper {...logInProps} children={<Login />} />
           ) : (
-            <RightBar {...registerProps} children={<Signup />} />
+            <FormWrapper {...registerProps} children={<Signup />} />
           )}
         </Grid>
       </Grid>
@@ -55,4 +55,4 @@ const LoginOrRegister = (props) => {
   );
 };
 
-export default LoginOrRegister;
+export default AuthWrapper;
