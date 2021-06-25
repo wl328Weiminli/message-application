@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { FormControl, FilledInput, InputAdornment } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
@@ -24,32 +23,30 @@ const styles = {
   },
 };
 
-class Search extends Component {
-  handleSubmit = (event) => {
+const Search = (props) => {
+  const { classes, handleChange } = props;
+  const handleSubmit = (event) => {
     event.preventDefault();
   };
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <FormControl fullWidth hiddenLabel>
-          <FilledInput
-            name="search"
-            onChange={this.props.handleChange}
-            classes={{ root: classes.filledInput, input: classes.input }}
-            disableUnderline
-            placeholder="Search"
-            startAdornment={
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            }
-          ></FilledInput>
-        </FormControl>
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={handleSubmit}>
+      <FormControl fullWidth hiddenLabel>
+        <FilledInput
+          name="search"
+          onChange={handleChange}
+          classes={{ root: classes.filledInput, input: classes.input }}
+          disableUnderline
+          placeholder="Search"
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          }
+        ></FilledInput>
+      </FormControl>
+    </form>
+  );
+};
 
 export default withStyles(styles)(Search);
