@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import IconLogo from "./IconLogo";
+import Bubble from "./images/bubble.svg";
 import background from "./images/bg-img.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "100% 100%",
     opacity: "85%",
+  },
+  logo: {
+    marginBottom: "35px",
   },
   slogan: {
     fontFamily: theme.typography.fontFamily,
@@ -30,7 +33,7 @@ const LeftBar = (props) => {
     >
       <div />
       <Grid container direction="column" alignItems="center">
-        <IconLogo />
+        <img src={Bubble} alt="Chat logo" className={classes.logo} />
         <Typography className={classes.slogan}>Converse with anyone</Typography>
         <Typography className={classes.slogan}> with any language</Typography>
       </Grid>
