@@ -14,9 +14,8 @@ const styles = {
   },
 };
 
-const Home = (props) => {
+const Home = ({ classes, fetchConversations, user, logout }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { classes, fetchConversations, user, logout } = props;
 
   useEffect(() => {
     fetchConversations();
