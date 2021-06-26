@@ -11,6 +11,8 @@ const { app, sessionStore } = require("../app");
 const http = require("http");
 const db = require("../db");
 const onlineUsers = require("../onlineUsers");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 /**
  * Get port from environment and store in Express.
@@ -30,6 +32,27 @@ const server = http.createServer(app);
  */
 
 const io = require("socket.io")(server);
+
+const wrap = (middleware) => (socket, next) =>
+  middleware(socket.request, {}, next);
+
+io.use(wrap(cookieParser(process.env.SESSION_SECRET)));
+
+io.use((socket, next) => {
+  const token = socket.request.signedCookies.token;
+  console.log(token);
+  if (token) {
+    jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
+      if (err) {
+        return next(new Error("not authorized"));
+      }
+      console.log("??????????");
+      next();
+    });
+  } else {
+    next(new Error("unauthorized"));
+  }
+});
 
 io.on("connection", (socket) => {
   socket.on("go-online", (id) => {
@@ -57,7 +80,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("connect_error", (err) => {
-    console.log(`connect_error due to ${err.message}`);
+    console.error(`connect_error due to ${err.message}`);
   });
 });
 
