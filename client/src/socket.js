@@ -27,7 +27,7 @@ socket.on("connect", () => {
     store.dispatch(setNewMessage(data.message, data.sender));
   });
   socket.on("connect_error", (err) => {
-    console.error(err.message); // prints the message associated with the error
+    console.error(err.message);
   });
 });
 
