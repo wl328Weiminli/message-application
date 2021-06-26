@@ -91,15 +91,6 @@ export const setStatusOfMessagToStore = (state, messageStatus) => {
       convo.id === conversationId &&
       convo.otherUser.username === activeConversation
     ) {
-      // const newConvo = { ...convo };
-      // const senderId = newConvo.otherUser.id;
-      // newConvo.messages.map((message) => {
-      //   if (message.senderId === senderId) {
-      //     message.read = true;
-      //   }
-      //   return message;
-      // });
-      // return newConvo;
       const newConvo = { ...convo };
       const senderId = newConvo.otherUser.id;
       newConvo.messages = newConvo.messages.map((message) => {
