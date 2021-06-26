@@ -12,7 +12,7 @@ router.post("/", async (req, res, next) => {
 
     // make sure the message is belong to the user
     const recipientId = req.user.id;
-    if (!activeConversation) {
+    if (!activeConversation || !unreadMessages) {
       return res.sendStatus(400);
     }
     const sender = await User.findOne({
@@ -25,7 +25,7 @@ router.post("/", async (req, res, next) => {
       recipientId
     );
 
-    // get the corrent messages that user can set status
+    // get the correct messages that user can set status
     const unReadMessagesId = [];
     unreadMessages.forEach((message) => {
       if (
@@ -48,7 +48,11 @@ router.post("/", async (req, res, next) => {
         },
       }
     );
-    res.sendStatus(204);
+    res.json({
+      settedMessagesId: unReadMessagesId,
+      conversationId: conversation.id,
+      activeConversation,
+    });
   } catch (error) {
     next(error);
   }
