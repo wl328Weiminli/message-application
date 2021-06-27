@@ -40,7 +40,6 @@ io.use(wrap(cookieParser(process.env.SESSION_SECRET)));
 
 io.use((socket, next) => {
   const token = socket.request.signedCookies.token;
-  console.log(token);
   if (token) {
     jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
       if (err) {
