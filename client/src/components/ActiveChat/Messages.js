@@ -1,10 +1,11 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { SenderBubble, OtherUserBubble } from "../ActiveChat";
+import TypingIndicator from "./TypingIndicator";
 import moment from "moment";
 
 const Messages = (props) => {
-  const { messages, otherUser, userId } = props;
+  const { messages, otherUser, userId, typing } = props;
   let lastSeenMessage = messages.reduce((lastSeenMessage, currMessage) => {
     if (currMessage.senderId === userId && currMessage.read) {
       return currMessage;
@@ -36,6 +37,9 @@ const Messages = (props) => {
           />
         );
       })}
+      {typing ? (
+        <OtherUserBubble text={<TypingIndicator />} otherUser={otherUser} />
+      ) : null}
     </Box>
   );
 };
