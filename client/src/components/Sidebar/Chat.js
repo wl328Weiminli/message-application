@@ -2,6 +2,7 @@ import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
+import { setUnreadMessages } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
 
 const styles = {
@@ -18,29 +19,55 @@ const styles = {
   },
 };
 
-const Chat = (props) => {
-  const { classes, conversation, setActiveChat } = props;
-  const otherUser = conversation.otherUser;
-  const handleClick = async () => {
-    await setActiveChat(otherUser.username);
+
+class Chat extends Component {
+  handleClick = async (conversation, unreadMessages) => {
+    const { username } = conversation.otherUser;
+    await this.props.setActiveChat(username);
+
+    if (unreadMessages.length > 0) {
+      await this.props.setUnreadMessages({
+        activeConversation: username,
+        unreadMessages,
+      });
+    }
   };
-  return (
-    <Box onClick={handleClick} className={classes.root}>
-      <BadgeAvatar
-        photoUrl={otherUser.photoUrl}
-        username={otherUser.username}
-        online={otherUser.online}
-        sidebar={true}
-      />
-      <ChatContent conversation={conversation} />
-    </Box>
-  );
-};
+
+  render() {
+    const { classes, conversation } = this.props;
+    const otherUser = this.props.conversation.otherUser;
+    // filter the unread message, the unread status is only for receiver
+    const unreadMessages = conversation.messages.filter(
+      (message) => otherUser.id === message.senderId && !message.read
+    );
+    return (
+      <Box
+        onClick={() => this.handleClick(conversation, unreadMessages)}
+        className={classes.root}
+      >
+        <BadgeAvatar
+          photoUrl={otherUser.photoUrl}
+          username={otherUser.username}
+          online={otherUser.online}
+          sidebar={true}
+        />
+        <ChatContent
+          conversation={conversation}
+          unreadMessages={unreadMessages.length}
+        />
+      </Box>
+    );
+  }
+}
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setActiveChat: (id) => {
       dispatch(setActiveChat(id));
+    },
+    setUnreadMessages: (messageStatus) => {
+      dispatch(setUnreadMessages(messageStatus));
     },
   };
 };

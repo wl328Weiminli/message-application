@@ -7,18 +7,23 @@ export const theme = createMuiTheme({
     button: {
       textTransform: "none",
       letterSpacing: 0,
-      fontWeight: "bold"
-    }
+      fontWeight: "bold",
+    },
   },
   overrides: {
     MuiInput: {
       input: {
-        fontWeight: "bold"
-      }
-    }
+        fontWeight: "bold",
+      },
+    },
   },
   palette: {
     primary: { main: "#3A8DFF" },
-    secondary: { main: "#B0B0B0" }
-  }
+    secondary: { main: "#B0B0B0" },
+  },
+  widthForInput: {
+    minWidth: "400px",
+    maxWidth: "500px",
+  },
+  logInOrRegisterButton: { width: "160px", height: "56px", marginTop: "50px" },
 });
