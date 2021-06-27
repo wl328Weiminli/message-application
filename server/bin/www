@@ -45,7 +45,6 @@ io.use((socket, next) => {
       if (err) {
         return next(new Error("not authorized"));
       }
-      console.log("??????????");
       next();
     });
   } else {
