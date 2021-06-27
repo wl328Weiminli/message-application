@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
@@ -19,6 +18,7 @@ const styles = {
     },
   },
 };
+
 
 class Chat extends Component {
   handleClick = async (conversation, unreadMessages) => {
@@ -59,6 +59,7 @@ class Chat extends Component {
     );
   }
 }
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
