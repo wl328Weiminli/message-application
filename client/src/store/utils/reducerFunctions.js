@@ -99,3 +99,15 @@ export const setStatusOfMessagToStore = (state, messageStatus) => {
     return convo;
   });
 };
+
+export const setTypingStatusToStore = (state, typingStatus) => {
+  // due to the boardcast, check the conversationId.
+  const { conversationId, typing } = typingStatus;
+  return state.map((convo) => {
+    if (convo.id === conversationId) {
+      return { ...convo, typing };
+    } else {
+      return convo;
+    }
+  });
+};
