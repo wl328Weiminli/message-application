@@ -84,12 +84,12 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 
 export const setStatusOfMessagToStore = (state, messageStatus) => {
   const { settedMessagesId, conversationId } = messageStatus;
-  const set = new Set(settedMessagesId);
+  const messagesShouldChangeToRead = new Set(settedMessagesId);
   return state.map((convo) => {
     if (convo.id === conversationId) {
       const newConvo = { ...convo };
       newConvo.messages = newConvo.messages.map((message) => {
-        if (set.has(message.id)) {
+        if (messagesShouldChangeToRead.has(message.id)) {
           return { ...message, read: true };
         }
         return message;
