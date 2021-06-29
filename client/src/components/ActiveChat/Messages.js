@@ -16,10 +16,8 @@ const Messages = (props) => {
     <Box>
       {messages.map((message) => {
         const time = moment(message.createdAt).format("h:mm");
-        let showAvatar = false;
-        if (lastSeenMessage.id && message.id === lastSeenMessage.id) {
-          showAvatar = true;
-        }
+        const showAvatar =
+          lastSeenMessage.id && message.id === lastSeenMessage.id;
         return message.senderId === userId ? (
           <SenderBubble
             key={message.id}
@@ -37,9 +35,9 @@ const Messages = (props) => {
           />
         );
       })}
-      {typing ? (
+      {typing && (
         <OtherUserBubble text={<TypingIndicator />} otherUser={otherUser} />
-      ) : null}
+      )}
     </Box>
   );
 };
