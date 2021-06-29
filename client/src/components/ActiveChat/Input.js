@@ -28,7 +28,7 @@ const Input = (props) => {
   };
 
   useEffect(() => {
-    // currently the socket is board cast, so we need check conversation id
+    // currently the socket is boardcast, so we need check conversation id
     if (conversationId) {
       socket.emit("typing", {
         conversationId,
