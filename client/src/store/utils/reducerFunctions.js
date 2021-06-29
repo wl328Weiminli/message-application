@@ -83,27 +83,13 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 };
 
 export const setStatusOfMessagToStore = (state, messageStatus) => {
-  const { activeConversation, unreadMessages } = messageStatus;
-  const { conversationId } = unreadMessages[0];
-
+  const { settedMessagesId, conversationId } = messageStatus;
+  const messagesShouldChangeToRead = new Set(settedMessagesId);
   return state.map((convo) => {
-    if (
-      convo.id === conversationId &&
-      convo.otherUser.username === activeConversation
-    ) {
-      // const newConvo = { ...convo };
-      // const senderId = newConvo.otherUser.id;
-      // newConvo.messages.map((message) => {
-      //   if (message.senderId === senderId) {
-      //     message.read = true;
-      //   }
-      //   return message;
-      // });
-      // return newConvo;
+    if (convo.id === conversationId) {
       const newConvo = { ...convo };
-      const senderId = newConvo.otherUser.id;
       newConvo.messages = newConvo.messages.map((message) => {
-        if (message.senderId === senderId) {
+        if (messagesShouldChangeToRead.has(message.id)) {
           return { ...message, read: true };
         }
         return message;
@@ -111,5 +97,17 @@ export const setStatusOfMessagToStore = (state, messageStatus) => {
       return newConvo;
     }
     return convo;
+  });
+};
+
+export const setTypingStatusToStore = (state, typingStatus) => {
+  // due to the boardcast, check the conversationId.
+  const { conversationId, typing } = typingStatus;
+  return state.map((convo) => {
+    if (convo.id === conversationId) {
+      return { ...convo, typing };
+    } else {
+      return convo;
+    }
   });
 };

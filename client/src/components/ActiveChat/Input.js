@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormControl, FilledInput } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import socket from "../../socket";
 import { postMessage } from "../../store/utils/thunkCreators";
 
-const styles = {
+const useStyles = makeStyles((theme) => ({
   root: {
     justifySelf: "flex-end",
     marginTop: 15,
@@ -15,15 +16,36 @@ const styles = {
     borderRadius: 8,
     marginBottom: 20,
   },
-};
+}));
 
 const Input = (props) => {
-  const { classes, otherUser, conversationId, user, postMessage } = props;
+  const classes = useStyles();
+  const { otherUser, conversationId, user, postMessage } = props;
+
   const [text, setText] = useState("");
 
   const handleChange = (event) => {
     setText(event.target.value);
   };
+
+  useEffect(() => {
+    // currently the socket is boardcast, so we need check conversation id
+    if (conversationId) {
+      socket.emit("typing", {
+        conversationId,
+        id: otherUser.id,
+        typing: true,
+      });
+      const delayDebounceFn = setTimeout(() => {
+        socket.emit("typing", {
+          conversationId,
+          id: otherUser.id,
+          typing: false,
+        });
+      }, 1000);
+      return () => clearTimeout(delayDebounceFn);
+    }
+  }, [text]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -69,7 +91,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Input));
+export default connect(mapStateToProps, mapDispatchToProps)(Input);

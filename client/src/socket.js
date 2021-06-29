@@ -4,6 +4,8 @@ import {
   setNewMessage,
   removeOfflineUser,
   addOnlineUser,
+  setMessageStatus,
+  setTypingStatus,
 } from "./store/conversations";
 import { setUnreadMessages } from "./store/utils/thunkCreators";
 
@@ -50,6 +52,13 @@ socket.on("connect", () => {
       }
     }
   });
+
+  socket.on("unreadMessages", (data) => {
+    store.dispatch(setMessageStatus(data));
+  });
+  socket.on("typing", (data) => {
+    store.dispatch(setTypingStatus(data));
+
   socket.on("connect_error", (err) => {
     console.error(err.message);
   });

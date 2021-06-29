@@ -101,13 +101,21 @@ export const postMessage = (body) => async (dispatch) => {
 };
 
 const setUnreadMessagesInDB = async (body) => {
-  await axios.post("/api/messages-status", body);
+  const { data } = await axios.post("/api/messages-status", body);
+  return data;
+};
+
+const setMessagesStatusToSender = (data) => {
+  socket.emit("unreadMessages", {
+    ...data,
+  });
 };
 
 export const setUnreadMessages = (body) => async (dispatch) => {
   try {
-    await setUnreadMessagesInDB(body);
-    dispatch(setMessageStatus(body));
+    const data = await setUnreadMessagesInDB(body);
+    dispatch(setMessageStatus(data));
+    setMessagesStatusToSender(data);
   } catch (error) {
     console.log(error);
   }

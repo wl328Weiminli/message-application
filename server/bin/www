@@ -71,6 +71,18 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("unreadMessages", (data) => {
+    socket.broadcast.emit("unreadMessages", {
+      ...data,
+    });
+  });
+
+  socket.on("typing", (data) => {
+    socket.broadcast.emit("typing", {
+      ...data,
+    });
+  });
+
   socket.on("logout", (id) => {
     if (onlineUsers[id]) {
       delete onlineUsers[id];
