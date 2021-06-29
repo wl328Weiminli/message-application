@@ -9,7 +9,12 @@ import {
 } from "./store/conversations";
 import { setUnreadMessages } from "./store/utils/thunkCreators";
 
-const socket = io(window.location.origin);
+const socket = io(window.location.origin, {
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: Infinity,
+});
 
 socket.on("connect", () => {
   console.log("connected to server");
@@ -47,11 +52,15 @@ socket.on("connect", () => {
       }
     }
   });
+
   socket.on("unreadMessages", (data) => {
     store.dispatch(setMessageStatus(data));
   });
   socket.on("typing", (data) => {
     store.dispatch(setTypingStatus(data));
+
+  socket.on("connect_error", (err) => {
+    console.error(err.message);
   });
 });
 

@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const Input = (props) => {
   const classes = useStyles();
   const { otherUser, conversationId, user, postMessage } = props;
+
   const [text, setText] = useState("");
 
   const handleChange = (event) => {
